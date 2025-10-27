@@ -7,6 +7,9 @@ import Carreras from './pages/Carreras';
 import Estudiantes from './pages/Estudiantes';
 import Docentes from './pages/Docentes';
 import EstudianteDashboard from './pages/EstudianteDashboard';
+import EstudianteMisCursos from './pages/EstudianteMisCursos';
+import EstudianteMisTareas from './pages/EstudianteMisTareas';
+import EstudianteMisNotas from './pages/EstudianteMisNotas';
 import DocenteDashboard from './pages/DocenteDashboard';
 
 // Componente para redirigir según rol
@@ -88,6 +91,30 @@ function App() {
             element={
               <ProtectedRoute requiredRole="estudiante">
                 <EstudianteDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/estudiante/mis-cursos"
+            element={
+              <ProtectedRoute requiredRole="estudiante">
+                <EstudianteMisCursos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/estudiante/mis-tareas"
+            element={
+              <ProtectedRoute requiredRole="estudiante">
+                <EstudianteMisTareas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/estudiante/mis-notas"
+            element={
+              <ProtectedRoute requiredRole="estudiante">
+                <EstudianteMisNotas />
               </ProtectedRoute>
             }
           />
