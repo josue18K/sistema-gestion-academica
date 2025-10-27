@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { carreraService } from '../services/carreraService';
-import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const Carreras = () => {
   const [carreras, setCarreras] = useState([]);
@@ -14,8 +14,18 @@ const Carreras = () => {
     duracion_semestres: 6,
     activo: true,
   });
-  const { logout } = useAuth();
   const navigate = useNavigate();
+
+  const menuItems = [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Carreras', path: '/carreras' },
+    { label: 'Semestres', path: '/semestres' },
+    { label: 'Materias', path: '/materias' },
+    { label: 'Grupos', path: '/grupos' },
+    { label: 'Estudiantes', path: '/estudiantes' },
+    { label: 'Docentes', path: '/docentes' },
+    { label: 'Inscripciones', path: '/inscripciones' },
+  ];
 
   useEffect(() => {
     fetchCarreras();
@@ -82,11 +92,6 @@ const Carreras = () => {
     });
   };
 
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -97,50 +102,7 @@ const Carreras = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
-      <nav className="bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-xl font-bold text-gray-800">Sistema Académico</h1>
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => navigate('/dashboard')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Dashboard
-                </button>
-                <button
-                  onClick={() => navigate('/carreras')}
-                  className="text-blue-600 font-semibold px-3 py-2"
-                >
-                  Carreras
-                </button>
-                <button
-                  onClick={() => navigate('/estudiantes')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Estudiantes
-                </button>
-                <button
-                  onClick={() => navigate('/docentes')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Docentes
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-              >
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar title="Sistema Académico" menuItems={menuItems} />
 
       {/* Content */}
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

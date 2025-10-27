@@ -16,6 +16,9 @@ import EstudianteMisTareas from './pages/EstudianteMisTareas';
 import EstudianteMisNotas from './pages/EstudianteMisNotas';
 import DocenteDashboard from './pages/DocenteDashboard';
 import DocenteMisGrupos from './pages/DocenteMisGrupos';
+import DocenteTareas from './pages/DocenteTareas';
+import DocenteAsistencias from './pages/DocenteAsistencias';
+import DocenteCalificaciones from './pages/DocenteCalificaciones';
 
 // Componente para redirigir según rol
 function RoleBasedRedirect() {
@@ -126,6 +129,30 @@ function App() {
             element={
               <ProtectedRoute requiredRole="docente">
                 <DocenteMisGrupos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/tareas"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteTareas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/asistencias"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteAsistencias />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/calificaciones"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteCalificaciones />
               </ProtectedRoute>
             }
           />
