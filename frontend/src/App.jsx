@@ -4,6 +4,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Carreras from './pages/Carreras';
+import Semestres from './pages/Semestres';
+import Materias from './pages/Materias';
+import Grupos from './pages/Grupos';
+import Inscripciones from './pages/Inscripciones';
 import Estudiantes from './pages/Estudiantes';
 import Docentes from './pages/Docentes';
 import EstudianteDashboard from './pages/EstudianteDashboard';
@@ -14,6 +18,8 @@ import DocenteDashboard from './pages/DocenteDashboard';
 import DocenteMisGrupos from './pages/DocenteMisGrupos';
 import DocenteTareas from './pages/DocenteTareas';
 import DocenteTareaEntregas from './pages/DocenteTareaEntregas';
+import DocenteAsistencias from './pages/DocenteAsistencias';
+import DocenteCalificaciones from './pages/DocenteCalificaciones';
 
 // Componente para redirigir según rol
 function RoleBasedRedirect() {
@@ -58,6 +64,38 @@ function App() {
             element={
               <ProtectedRoute requiredRole="administrador">
                 <Carreras />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/semestres"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Semestres />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/materias"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Materias />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/grupos"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Grupos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inscripciones"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Inscripciones />
               </ProtectedRoute>
             }
           />
@@ -108,6 +146,22 @@ function App() {
             element={
               <ProtectedRoute requiredRole="docente">
                 <DocenteTareaEntregas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/asistencias"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteAsistencias />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/calificaciones"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteCalificaciones />
               </ProtectedRoute>
             }
           />

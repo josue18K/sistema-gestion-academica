@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { tareaService } from '../services/tareaService';
 import api from '../services/api';
+import Navbar from '../components/Navbar';
 
 const DocenteTareas = () => {
-  const [grupos, setGrupos] = useState([]);
   const [tareas, setTareas] = useState([]);
+  const [grupos, setGrupos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingTarea, setEditingTarea] = useState(null);
@@ -15,27 +17,33 @@ const DocenteTareas = () => {
     descripcion: '',
     fecha_asignacion: '',
     fecha_entrega: '',
-    puntaje_maximo: 20,
+    puntaje_maximo: 100,
   });
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
+  const menuItems = [
+    { label: 'Dashboard', path: '/docente/dashboard' },
+    { label: 'Mis Grupos', path: '/docente/mis-grupos' },
+    { label: 'Tareas', path: '/docente/tareas' },
+    { label: 'Asistencias', path: '/docente/asistencias' },
+    { label: 'Calificaciones', path: '/docente/calificaciones' },
+  ];
+
   useEffect(() => {
-    fetchTareas();
+    fetchData();
   }, []);
 
-  const fetchTareas = async () => {
+  const fetchData = async () => {
     try {
       const meResponse = await api.get('/me');
       const docenteId = meResponse.data.docente?.id;
 
       if (docenteId) {
-        // Obtener grupos del docente
         const gruposResponse = await api.get('/grupos');
         const misGrupos = gruposResponse.data.filter(g => g.docente_id === docenteId);
         setGrupos(misGrupos);
 
-        // Obtener tareas de todos los grupos
         const tareasPromises = misGrupos.map(grupo =>
           api.get(`/tareas/grupo/${grupo.id}`)
         );
@@ -44,7 +52,7 @@ const DocenteTareas = () => {
         setTareas(todasTareas);
       }
     } catch (error) {
-      console.error('Error al cargar tareas:', error);
+      console.error('Error al cargar datos:', error);
     } finally {
       setLoading(false);
     }
@@ -56,11 +64,10 @@ const DocenteTareas = () => {
       if (editingTarea) {
         await api.put(`/tareas/${editingTarea.id}`, formData);
       } else {
-        await api.post('/tareas', formData);
+        await tareaService.create(formData);
       }
-      fetchTareas();
+      fetchData();
       handleCloseModal();
-      alert('Tarea guardada exitosamente');
     } catch (error) {
       console.error('Error al guardar tarea:', error);
       alert('Error al guardar la tarea');
@@ -70,8 +77,8 @@ const DocenteTareas = () => {
   const handleDelete = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar esta tarea?')) {
       try {
-        await api.delete(`/tareas/${id}`);
-        fetchTareas();
+        await tareaService.delete(id);
+        fetchData();
       } catch (error) {
         console.error('Error al eliminar tarea:', error);
         alert('Error al eliminar la tarea');
@@ -85,11 +92,15 @@ const DocenteTareas = () => {
       grupo_id: tarea.grupo_id,
       titulo: tarea.titulo,
       descripcion: tarea.descripcion,
-      fecha_asignacion: tarea.fecha_asignacion.split('T')[0],
+      fecha_asignacion: tarea.fecha_asignacion ? tarea.fecha_asignacion.split('T')[0] : '',
       fecha_entrega: tarea.fecha_entrega.split('T')[0],
       puntaje_maximo: tarea.puntaje_maximo,
     });
     setShowModal(true);
+  };
+
+  const handleVerEntregas = (tareaId) => {
+    navigate(`/docente/tarea/${tareaId}/entregas`);
   };
 
   const handleCloseModal = () => {
@@ -101,17 +112,8 @@ const DocenteTareas = () => {
       descripcion: '',
       fecha_asignacion: '',
       fecha_entrega: '',
-      puntaje_maximo: 20,
+      puntaje_maximo: 100,
     });
-  };
-
-  const handleVerEntregas = (tareaId) => {
-    navigate(`/docente/tarea/${tareaId}/entregas`);
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
   };
 
   if (loading) {
@@ -124,61 +126,8 @@ const DocenteTareas = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
-      <nav className="bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-xl font-bold text-gray-800">Portal Docente</h1>
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => navigate('/docente/dashboard')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Inicio
-                </button>
-                <button
-                  onClick={() => navigate('/docente/mis-grupos')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Mis Grupos
-                </button>
-                <button
-                  onClick={() => navigate('/docente/tareas')}
-                  className="text-blue-600 font-semibold px-3 py-2"
-                >
-                  Tareas
-                </button>
-                <button
-                  onClick={() => navigate('/docente/asistencias')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Asistencias
-                </button>
-                <button
-                  onClick={() => navigate('/docente/calificaciones')}
-                  className="text-gray-600 hover:text-gray-900 px-3 py-2"
-                >
-                  Calificaciones
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">
-                <strong>{user?.name}</strong>
-              </span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
-              >
-                Cerrar Sesión
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navbar title="Portal Docente" menuItems={menuItems} />
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="flex justify-between items-center mb-6">
@@ -204,14 +153,16 @@ const DocenteTareas = () => {
                         {tarea.titulo}
                       </h3>
                       <p className="text-sm text-gray-600 mt-1">
-                        {tarea.grupo.materia.nombre} - Grupo {tarea.grupo.nombre_grupo}
+                        {tarea.grupo?.materia?.nombre} - Grupo {tarea.grupo?.nombre_grupo}
                       </p>
                       <p className="text-sm text-gray-700 mt-2">{tarea.descripcion}</p>
                       <div className="flex space-x-4 mt-3 text-sm text-gray-600">
-                        <p>
-                          <strong>Asignación:</strong>{' '}
-                          {new Date(tarea.fecha_asignacion).toLocaleDateString()}
-                        </p>
+                        {tarea.fecha_asignacion && (
+                          <p>
+                            <strong>Asignación:</strong>{' '}
+                            {new Date(tarea.fecha_asignacion).toLocaleDateString()}
+                          </p>
+                        )}
                         <p>
                           <strong>Entrega:</strong>{' '}
                           {new Date(tarea.fecha_entrega).toLocaleDateString()}
@@ -278,7 +229,7 @@ const DocenteTareas = () => {
                       <option value="">Seleccionar grupo</option>
                       {grupos.map((grupo) => (
                         <option key={grupo.id} value={grupo.id}>
-                          {grupo.materia.nombre} - Grupo {grupo.nombre_grupo}
+                          {grupo.materia?.nombre} - Grupo {grupo.nombre_grupo}
                         </option>
                       ))}
                     </select>
@@ -317,7 +268,7 @@ const DocenteTareas = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-gray-700 text-sm font-bold mb-2">
-                        Fecha Asignación *
+                        Fecha Asignación
                       </label>
                       <input
                         type="date"
@@ -326,7 +277,6 @@ const DocenteTareas = () => {
                           setFormData({ ...formData, fecha_asignacion: e.target.value })
                         }
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
                       />
                     </div>
 
