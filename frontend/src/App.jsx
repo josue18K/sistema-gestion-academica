@@ -1,22 +1,48 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Carreras from './pages/Carreras';
 import Estudiantes from './pages/Estudiantes';
 import Docentes from './pages/Docentes';
+import EstudianteDashboard from './pages/EstudianteDashboard';
+import DocenteDashboard from './pages/DocenteDashboard';
+
+// Componente para redirigir según rol
+function RoleBasedRedirect() {
+  const { user } = useAuth();
+
+  if (!user) return <Navigate to="/login" />;
+
+  switch (user.role) {
+    case 'administrador':
+      return <Navigate to="/dashboard" />;
+    case 'docente':
+      return <Navigate to="/docente/dashboard" />;
+    case 'estudiante':
+      return <Navigate to="/estudiante/dashboard" />;
+    default:
+      return <Navigate to="/login" />;
+  }
+}
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
+          {/* Rutas públicas */}
           <Route path="/login" element={<Login />} />
+
+          {/* Redirección basada en rol */}
+          <Route path="/" element={<RoleBasedRedirect />} />
+
+          {/* Rutas de Administrador */}
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="administrador">
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -24,7 +50,7 @@ function App() {
           <Route
             path="/carreras"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="administrador">
                 <Carreras />
               </ProtectedRoute>
             }
@@ -32,7 +58,7 @@ function App() {
           <Route
             path="/estudiantes"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="administrador">
                 <Estudiantes />
               </ProtectedRoute>
             }
@@ -40,13 +66,34 @@ function App() {
           <Route
             path="/docentes"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="administrador">
                 <Docentes />
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+
+          {/* Rutas de Docente */}
+          <Route
+            path="/docente/dashboard"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Rutas de Estudiante */}
+          <Route
+            path="/estudiante/dashboard"
+            element={
+              <ProtectedRoute requiredRole="estudiante">
+                <EstudianteDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Ruta por defecto */}
+          <Route path="*" element={<RoleBasedRedirect />} />
         </Routes>
       </AuthProvider>
     </Router>
