@@ -3,6 +3,9 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Carreras from './pages/Carreras';
+import Estudiantes from './pages/Estudiantes';
+import Docentes from './pages/Docentes';
 
 function App() {
   return (
@@ -15,6 +18,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/carreras"
+            element={
+              <ProtectedRoute>
+                <Carreras />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/estudiantes"
+            element={
+              <ProtectedRoute>
+                <Estudiantes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docentes"
+            element={
+              <ProtectedRoute>
+                <Docentes />
               </ProtectedRoute>
             }
           />
