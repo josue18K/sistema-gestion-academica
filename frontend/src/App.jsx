@@ -17,6 +17,7 @@ import EstudianteMisNotas from './pages/EstudianteMisNotas';
 import DocenteDashboard from './pages/DocenteDashboard';
 import DocenteMisGrupos from './pages/DocenteMisGrupos';
 import DocenteTareas from './pages/DocenteTareas';
+import DocenteTareaEntregas from './pages/DocenteTareaEntregas';
 import DocenteAsistencias from './pages/DocenteAsistencias';
 import DocenteCalificaciones from './pages/DocenteCalificaciones';
 
@@ -137,6 +138,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole="docente">
                 <DocenteTareas />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/tarea/:tareaId/entregas"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteTareaEntregas />
               </ProtectedRoute>
             }
           />
