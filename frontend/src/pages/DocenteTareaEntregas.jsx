@@ -165,7 +165,7 @@ const DocenteTareaEntregas = () => {
                         {new Date(entrega.fecha_entrega).toLocaleString()}
                       </p>
                       {entrega.archivo_url && (
-
+                        <a
                           href={entrega.archivo_url}
                           target="_blank"
                           rel="noopener noreferrer"
