@@ -4,6 +4,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Carreras from './pages/Carreras';
+import Semestres from './pages/Semestres';
+import Materias from './pages/Materias';
+import Grupos from './pages/Grupos';
+import Inscripciones from './pages/Inscripciones';
 import Estudiantes from './pages/Estudiantes';
 import Docentes from './pages/Docentes';
 import EstudianteDashboard from './pages/EstudianteDashboard';
@@ -11,6 +15,7 @@ import EstudianteMisCursos from './pages/EstudianteMisCursos';
 import EstudianteMisTareas from './pages/EstudianteMisTareas';
 import EstudianteMisNotas from './pages/EstudianteMisNotas';
 import DocenteDashboard from './pages/DocenteDashboard';
+import DocenteMisGrupos from './pages/DocenteMisGrupos';
 
 // Componente para redirigir según rol
 function RoleBasedRedirect() {
@@ -59,6 +64,38 @@ function App() {
             }
           />
           <Route
+            path="/semestres"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Semestres />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/materias"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Materias />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/grupos"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Grupos />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inscripciones"
+            element={
+              <ProtectedRoute requiredRole="administrador">
+                <Inscripciones />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/estudiantes"
             element={
               <ProtectedRoute requiredRole="administrador">
@@ -81,6 +118,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole="docente">
                 <DocenteDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/docente/mis-grupos"
+            element={
+              <ProtectedRoute requiredRole="docente">
+                <DocenteMisGrupos />
               </ProtectedRoute>
             }
           />
