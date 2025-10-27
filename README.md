@@ -1,61 +1,306 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Gestión Académica
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema completo de gestión académica desarrollado con Laravel 12 y React + Tailwind CSS.
 
-## About Laravel
+## 🚀 Características
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- ✅ Gestión de usuarios con roles (Administrador, Docente, Estudiante)
+- ✅ Administración de carreras, semestres y materias
+- ✅ Gestión de grupos y asignación de docentes
+- ✅ Control de inscripciones estudiantiles
+- ✅ Registro de asistencias
+- ✅ Gestión de notas y calificaciones
+- ✅ Sistema de tareas y entregas
+- ✅ API RESTful completa
+- ✅ Autenticación con Laravel Sanctum
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Tecnologías
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Backend
+- Laravel 12
+- MySQL / MariaDB
+- Laravel Sanctum (Autenticación)
+- Eloquent ORM
 
-## Learning Laravel
+### Frontend (Próximamente)
+- React.js
+- Tailwind CSS
+- Axios
+- Vite
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📋 Requisitos
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- PHP >= 8.2
+- Composer
+- MySQL >= 8.0
+- Node.js >= 18.x (para el frontend)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔧 Instalación
 
-## Laravel Sponsors
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/josue18K/sistema-gestion-academica.git
+cd sistema-gestion-academica
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 2. Instalar dependencias
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Configurar el archivo .env
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Edita el archivo `.env` con tus credenciales de base de datos:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sistema_academico
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Contributing
+### 4. Ejecutar migraciones y seeders
+```bash
+php artisan migrate:fresh --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 5. Iniciar el servidor
+```bash
+php artisan serve
+```
 
-## Code of Conduct
+El servidor estará disponible en: `http://127.0.0.1:8000`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 👤 Usuarios de Prueba
 
-## Security Vulnerabilities
+Después de ejecutar los seeders, tendrás acceso a:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Administrador
+- **Email:** admin@sistema.com
+- **Password:** password
 
-## License
+### Docentes
+- **Email:** docente1@sistema.com a docente10@sistema.com
+- **Password:** password
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Estudiantes
+- **Email:** estudiante1@sistema.com a estudiante50@sistema.com
+- **Password:** password
+
+## 📚 Documentación de la API
+
+### Base URL
+```
+http://127.0.0.1:8000/api
+```
+
+### Autenticación
+
+#### Login
+```http
+POST /api/login
+Content-Type: application/json
+
+{
+    "email": "admin@sistema.com",
+    "password": "password"
+}
+```
+
+**Respuesta:**
+```json
+{
+    "access_token": "1|xxxxxxxxxxxx",
+    "token_type": "Bearer",
+    "user": { ... }
+}
+```
+
+#### Logout
+```http
+POST /api/logout
+Authorization: Bearer {token}
+```
+
+#### Usuario Actual
+```http
+GET /api/me
+Authorization: Bearer {token}
+```
+
+### Endpoints Principales
+
+Todos los endpoints requieren autenticación excepto `/login` y `/register`.
+
+#### Carreras
+- `GET /api/carreras` - Listar carreras
+- `POST /api/carreras` - Crear carrera
+- `GET /api/carreras/{id}` - Ver detalle
+- `PUT /api/carreras/{id}` - Actualizar
+- `DELETE /api/carreras/{id}` - Eliminar
+
+#### Estudiantes
+- `GET /api/estudiantes` - Listar estudiantes
+- `POST /api/estudiantes` - Crear estudiante
+- `GET /api/estudiantes/{id}` - Ver detalle
+- `PUT /api/estudiantes/{id}` - Actualizar
+- `DELETE /api/estudiantes/{id}` - Eliminar
+
+#### Docentes
+- `GET /api/docentes` - Listar docentes
+- `POST /api/docentes` - Crear docente
+- `GET /api/docentes/{id}` - Ver detalle
+- `PUT /api/docentes/{id}` - Actualizar
+- `DELETE /api/docentes/{id}` - Eliminar
+
+#### Materias
+- `GET /api/materias` - Listar materias
+- `POST /api/materias` - Crear materia
+- `GET /api/materias/{id}` - Ver detalle
+- `PUT /api/materias/{id}` - Actualizar
+- `DELETE /api/materias/{id}` - Eliminar
+
+#### Grupos
+- `GET /api/grupos` - Listar grupos
+- `POST /api/grupos` - Crear grupo
+- `GET /api/grupos/{id}` - Ver detalle
+- `PUT /api/grupos/{id}` - Actualizar
+- `DELETE /api/grupos/{id}` - Eliminar
+
+#### Inscripciones
+- `GET /api/inscripciones` - Listar inscripciones
+- `POST /api/inscripciones` - Crear inscripción
+- `GET /api/inscripciones/{id}` - Ver detalle
+- `PUT /api/inscripciones/{id}` - Actualizar
+- `DELETE /api/inscripciones/{id}` - Eliminar
+- `GET /api/inscripciones/estudiante/{estudianteId}` - Inscripciones por estudiante
+- `GET /api/inscripciones/grupo/{grupoId}` - Inscripciones por grupo
+
+#### Asistencias
+- `GET /api/asistencias` - Listar asistencias
+- `POST /api/asistencias` - Registrar asistencia
+- `GET /api/asistencias/{id}` - Ver detalle
+- `PUT /api/asistencias/{id}` - Actualizar
+- `DELETE /api/asistencias/{id}` - Eliminar
+- `GET /api/asistencias/inscripcion/{inscripcionId}` - Asistencias por inscripción
+- `POST /api/asistencias/masivo` - Registro masivo
+
+#### Notas
+- `GET /api/notas` - Listar notas
+- `POST /api/notas` - Crear nota
+- `GET /api/notas/{id}` - Ver detalle
+- `PUT /api/notas/{id}` - Actualizar
+- `DELETE /api/notas/{id}` - Eliminar
+- `GET /api/notas/inscripcion/{inscripcionId}` - Notas por inscripción
+- `GET /api/notas/promedio/{inscripcionId}` - Calcular promedio
+
+#### Tareas
+- `GET /api/tareas` - Listar tareas
+- `POST /api/tareas` - Crear tarea
+- `GET /api/tareas/{id}` - Ver detalle
+- `PUT /api/tareas/{id}` - Actualizar
+- `DELETE /api/tareas/{id}` - Eliminar
+- `GET /api/tareas/grupo/{grupoId}` - Tareas por grupo
+
+#### Entregas de Tareas
+- `GET /api/entregas-tareas` - Listar entregas
+- `POST /api/entregas-tareas` - Crear entrega
+- `GET /api/entregas-tareas/{id}` - Ver detalle
+- `PUT /api/entregas-tareas/{id}` - Actualizar
+- `DELETE /api/entregas-tareas/{id}` - Eliminar
+- `POST /api/entregas-tareas/{id}/calificar` - Calificar entrega
+- `GET /api/entregas-tareas/tarea/{tareaId}` - Entregas por tarea
+- `GET /api/entregas-tareas/estudiante/{estudianteId}` - Entregas por estudiante
+
+## 🗂️ Estructura del Proyecto
+```
+sistema-gestion-academica/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── Api/
+│   │           ├── AuthController.php
+│   │           ├── CarreraController.php
+│   │           ├── EstudianteController.php
+│   │           ├── DocenteController.php
+│   │           ├── MateriaController.php
+│   │           ├── GrupoController.php
+│   │           ├── InscripcionController.php
+│   │           ├── AsistenciaController.php
+│   │           ├── NotaController.php
+│   │           ├── TareaController.php
+│   │           └── EntregaTareaController.php
+│   └── Models/
+│       ├── User.php
+│       ├── Carrera.php
+│       ├── Estudiante.php
+│       ├── Docente.php
+│       ├── Semestre.php
+│       ├── Materia.php
+│       ├── Grupo.php
+│       ├── Inscripcion.php
+│       ├── Asistencia.php
+│       ├── Nota.php
+│       ├── Tarea.php
+│       └── EntregaTarea.php
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+├── routes/
+│   └── api.php
+└── README.md
+```
+
+## 🔐 Seguridad
+
+- Todas las contraseñas están hasheadas con bcrypt
+- Autenticación mediante tokens JWT con Laravel Sanctum
+- Validación de datos en todos los endpoints
+- Protección CSRF
+- Relaciones de base de datos con integridad referencial
+
+## 📝 Base de Datos
+
+### Diagrama de Relaciones
+```
+users (1) ──── (1) estudiantes ──── (N) inscripciones
+users (1) ──── (1) docentes ──── (N) grupos
+
+carreras (1) ──── (N) semestres ──── (N) materias ──── (N) grupos
+
+grupos (1) ──── (N) inscripciones
+grupos (1) ──── (N) tareas
+
+inscripciones (1) ──── (N) asistencias
+inscripciones (1) ──── (N) notas
+
+tareas (1) ──── (N) entregas_tareas
+estudiantes (1) ──── (N) entregas_tareas
+```
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, abre un issue o pull request.
+
+## 📄 Licencia
+
+Este proyecto es de código abierto bajo la licencia MIT.
+
+## 👨‍💻 Autor
+
+**josue18K**
+- GitHub: [@josue18K](https://github.com/josue18K)
+
+## 📞 Soporte
+
+Si tienes alguna pregunta o problema, por favor abre un issue en GitHub.
+
+---
+
+⭐ Si te gusta este proyecto, dale una estrella en GitHub!
