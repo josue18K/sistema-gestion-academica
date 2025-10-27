@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CarreraController;
 use App\Http\Controllers\Api\EstudianteController;
 use App\Http\Controllers\Api\DocenteController;
+use App\Http\Controllers\Api\SemestreController;
 use App\Http\Controllers\Api\MateriaController;
 use App\Http\Controllers\Api\GrupoController;
 use App\Http\Controllers\Api\InscripcionController;
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Carreras
     Route::apiResource('carreras', CarreraController::class);
+
+    // Semestres
+    Route::apiResource('semestres', SemestreController::class);
 
     // Estudiantes
     Route::apiResource('estudiantes', EstudianteController::class);
